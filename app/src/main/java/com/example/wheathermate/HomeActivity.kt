@@ -33,7 +33,8 @@ class HomeActivity : AppCompatActivity() {
         @GET("weather")
         fun getWeatherData(
             @Query("q") location: String,
-            @Query("appid") apiKey: String
+            @Query("appid") apiKey: String,
+            @Query("units") units: String
             // 기타 필요한 쿼리 파라미터들을 추가할 수 있습니다.
             // 예시) @Query("units") units: String (온도 단위 설정)
             // 예시) @Query("lang") langCode : String (언어 설정)
@@ -59,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
 
         // API 호출 함수
         fun fetchWeatherData(locationName: String, apiKey: String) {
-            val call = service.getWeatherData(locationName, apiKey)
+            val call = service.getWeatherData(locationName, apiKey, "metric")
 
             call.enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(
@@ -69,9 +70,10 @@ class HomeActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val weatherData = response.body()
                         if (weatherData != null) {
-                            val currentTemperature = weatherData.main.temp.toInt()
+                            val currentTemperatureKelvin = weatherData.main.temp
+                            val currentTemperatureCelsius = currentTemperatureKelvin - 273.15
                             val temperatureText =
-                                "Current Temperature : $currentTemperature°C"
+                                "Current Temperature : ${currentTemperatureCelsius.toInt()}°C"
                             binding.weatherTextView.text = temperatureText
                         }
                     } else {
