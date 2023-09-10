@@ -11,12 +11,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Current Temperature : 25°C" />
+        tools:text="현재 온도는 : 25°C" />
+
+    <Spinner
+        android:id="@+id/city_spinner"
+        android:layout_width="145dp"
+        android:layout_height="36dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="51dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

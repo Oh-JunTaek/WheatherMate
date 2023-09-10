@@ -1,7 +1,11 @@
 package com.example.wheathermate
 
+import android.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,10 +74,9 @@ class HomeActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val weatherData = response.body()
                         if (weatherData != null) {
-                            val currentTemperatureKelvin = weatherData.main.temp
-                            val currentTemperatureCelsius = currentTemperatureKelvin - 273.15
+                            val currentTemperatureCelsius = weatherData.main.temp.toInt()
                             val temperatureText =
-                                "Current Temperature : ${currentTemperatureCelsius.toInt()}°C"
+                                "현재 온도는 : ${currentTemperatureCelsius}°C"
                             binding.weatherTextView.text = temperatureText
                         }
                     } else {
@@ -82,16 +85,38 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call : Call<WeatherResponse>, t : Throwable){
+                override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                     println(t.message)
                 }
             })
         }
 
         // 원하는 지역명과 실제 API 키로 대체해야 합니다.
-        val locationName = "Seoul"
-        val apiKey = "1cf6f6e62d8764d472500d3b00e1b455"
 
-        fetchWeatherData(locationName, apiKey)
+        val apiKey = "1cf6f6e62d8764d472500d3b00e1b455"
+        val cities = arrayOf("Seoul", "Busan", "Incheon", "Daegu" /* 다른 도시들 */)
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, cities)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.citySpinner.adapter = adapter
+
+        binding.citySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val selectedCity = parent.getItemAtPosition(position).toString()
+                fetchWeatherData(selectedCity, apiKey)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // 아무것도 선택되지 않았을 때의 처리
+            }
+        }
+
+        // 초기 날씨 정보 로딩 (예: 서울)
+        fetchWeatherData("Seoul", apiKey)
     }
 }
