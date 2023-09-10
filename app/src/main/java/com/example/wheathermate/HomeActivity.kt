@@ -78,6 +78,17 @@ class HomeActivity : AppCompatActivity() {
                             val temperatureText =
                                 "현재 온도는 : ${currentTemperatureCelsius}°C"
                             binding.weatherTextView.text = temperatureText
+
+                            val weatherCondition = weatherData.weather[0].main
+
+                            // imageView에 대한 참조가 필요합니다.
+                            // 예시로 binding.imageView로 가정했습니다.
+                            when (weatherCondition) {
+                                "Rain" -> binding.imageView.setImageResource(R.drawable.umbrella_icon)
+                                "Clear" -> binding.imageView.setImageResource(R.drawable.sun_icon)
+                                "Snow" -> binding.imageView.setImageResource(R.drawable.snowman_icon)
+                                else -> binding.imageView.setImageResource(R.drawable.default_icon)
+                            }
                         }
                     } else {
                         // 에러 메시지 출력
@@ -118,5 +129,7 @@ class HomeActivity : AppCompatActivity() {
 
         // 초기 날씨 정보 로딩 (예: 서울)
         fetchWeatherData("Seoul", apiKey)
+
+
     }
 }

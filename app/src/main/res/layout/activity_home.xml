@@ -8,22 +8,31 @@
 
     <TextView
         android:id="@+id/weatherTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="99dp"
+        android:layout_height="51dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="168dp"
         android:layout_marginEnd="120dp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="현재 온도는 : 25°C" />
+        tools:text=" 25°C" />
 
     <Spinner
         android:id="@+id/city_spinner"
         android:layout_width="145dp"
         android:layout_height="36dp"
+        tools:layout_editor_absoluteX="250dp"
+        tools:layout_editor_absoluteY="83dp" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="214dp"
+        android:layout_height="103dp"
+        android:src="@drawable/Logo_WM"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="51dp" />
+        tools:layout_editor_absoluteY="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
