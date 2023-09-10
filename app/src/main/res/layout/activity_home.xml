@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".HomeActivity">
 
     <TextView
@@ -22,17 +23,38 @@
 
     <Spinner
         android:id="@+id/city_spinner"
-        android:layout_width="145dp"
-        android:layout_height="36dp"
-        tools:layout_editor_absoluteX="250dp"
-        tools:layout_editor_absoluteY="83dp" />
+        android:layout_width="148dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="214dp"
         android:layout_height="103dp"
-        android:src="@drawable/Logo_WM"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="181dp"
+        android:src="@drawable/logo_wm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="137dp"
+        android:layout_marginEnd="249dp"
+        android:src="@drawable/default_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

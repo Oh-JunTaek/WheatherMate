@@ -1,6 +1,6 @@
 package com.example.wheathermate
 
-import android.R
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -76,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
                         if (weatherData != null) {
                             val currentTemperatureCelsius = weatherData.main.temp.toInt()
                             val temperatureText =
-                                "현재 온도는 : ${currentTemperatureCelsius}°C"
+                                "${currentTemperatureCelsius}°C"
                             binding.weatherTextView.text = temperatureText
 
                             val weatherCondition = weatherData.weather[0].main
@@ -84,9 +84,10 @@ class HomeActivity : AppCompatActivity() {
                             // imageView에 대한 참조가 필요합니다.
                             // 예시로 binding.imageView로 가정했습니다.
                             when (weatherCondition) {
-                                "Rain" -> binding.imageView.setImageResource(R.drawable.umbrella_icon)
-                                "Clear" -> binding.imageView.setImageResource(R.drawable.sun_icon)
-                                "Snow" -> binding.imageView.setImageResource(R.drawable.snowman_icon)
+                                "Rain" -> binding.imageView.setImageResource(R.drawable.rain)
+                                "Clear" -> binding.imageView.setImageResource(R.drawable.sun)
+                                "Snow" -> binding.imageView.setImageResource(R.drawable.snow)
+                                "Clouds" -> binding.imageView.setImageResource(R.drawable.clouds)
                                 else -> binding.imageView.setImageResource(R.drawable.default_icon)
                             }
                         }
@@ -106,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
 
         val apiKey = "1cf6f6e62d8764d472500d3b00e1b455"
         val cities = arrayOf("Seoul", "Busan", "Incheon", "Daegu" /* 다른 도시들 */)
-        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, cities)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cities)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.citySpinner.adapter = adapter
