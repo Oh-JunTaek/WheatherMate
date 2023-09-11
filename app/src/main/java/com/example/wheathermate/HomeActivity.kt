@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,16 +25,13 @@ class HomeActivity : AppCompatActivity() {
         val main: Main,
         // 필요한 날씨 정보들을 포함하는 다른 필드들도 추가할 수 있습니다.
     )
-
     data class Weather(
         val id: Int,
         val main: String,
     )
-
     data class Main(
         val temp: Double,
     )
-
     interface WeatherApiService {
         @GET("weather")
         fun getWeatherData(
@@ -107,7 +105,7 @@ class HomeActivity : AppCompatActivity() {
 
         // 원하는 지역명과 실제 API 키로 대체해야 합니다.
 
-        val apiKey = "1cf6f6e62d8764d472500d3b00e1b455"
+        val apiKey = "BuildConfig.WEATHER_API_KEY"
         val cities = arrayOf("Seoul", "Busan", "Incheon", "Daegu" /* 다른 도시들 */)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cities)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -134,18 +132,48 @@ class HomeActivity : AppCompatActivity() {
         fetchWeatherData("Seoul", apiKey)
 
         // 사용자가 선택한 날짜. 실제로는 달력에서 가져옵니다.
-        val selectedDate = "2020-01-21"
+        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val selectedDate = "$year-${month + 1}-$dayOfMonth"
+
+            val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+
+            editor.putString("selected_date", selectedDate)
+            editor.apply()
+        }
 
         // 버튼 클릭 리스너 설정
         binding.btnchk.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+
+            // previously selected date from the calendar
+            val selectedDate = sharedPreferences.getString("selected_date", null)
+
+            if (selectedDate != null) {
+                // Load data for the selected date
+                val titleForSelectedDate = sharedPreferences.getString("$selectedDate-title", "")
+                val contentForSelectedDate =
+                    sharedPreferences.getString("$selectedDate-content", "")
+
+                if (titleForSelectedDate == "" && contentForSelectedDate == "") {
+                    Toast.makeText(this@HomeActivity, "일정 없음", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Use or display the loaded data...
+                    // If you have a TextView to display this data, you can do something like:
+                    // binding.myTextView.text = "$titleForSelectedDate\n$contentForSelectedDate"
+
+                }
+
+            } else {
+                Toast.makeText(this@HomeActivity, "No date is selected.", Toast.LENGTH_SHORT).show()
+            }
+
             // Intent 생성 및 데이터 추가
             val intent = Intent(this, PopActivity::class.java)
             intent.putExtra("selected_date", selectedDate)
 
             // 새로운 Activity 시작
             startActivity(intent)
-
-
         }
     }
 }
