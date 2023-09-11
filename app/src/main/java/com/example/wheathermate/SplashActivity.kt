@@ -18,6 +18,6 @@ class SplashActivity : AppCompatActivity() {
 
             // HomeActivity를 시작한 후에는 SplashActivity를 종료합니다.
             finish()
-        }, 2000)  // 2000ms(2초) 후에 run() 메서드를 실행합니다.
+        }, 4000)  // 4000ms(4초) 후에 run() 메서드를 실행합니다.
     }
 }

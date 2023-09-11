@@ -1,6 +1,7 @@
 package com.example.wheathermate
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -52,7 +53,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val view = binding.root
+        setContentView(view)
 
         // Retrofit 객체 생성
         val retrofit = Retrofit.Builder()
@@ -131,6 +133,19 @@ class HomeActivity : AppCompatActivity() {
         // 초기 날씨 정보 로딩 (예: 서울)
         fetchWeatherData("Seoul", apiKey)
 
+        // 사용자가 선택한 날짜. 실제로는 달력에서 가져옵니다.
+        val selectedDate = "2020-01-21"
 
+        // 버튼 클릭 리스너 설정
+        binding.btnchk.setOnClickListener {
+            // Intent 생성 및 데이터 추가
+            val intent = Intent(this, PopActivity::class.java)
+            intent.putExtra("selected_date", selectedDate)
+
+            // 새로운 Activity 시작
+            startActivity(intent)
+
+
+        }
     }
 }
