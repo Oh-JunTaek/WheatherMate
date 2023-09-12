@@ -45,11 +45,16 @@ class SplashActivity : AppCompatActivity() {
         binding.signInButton.setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
+
+            // Set login type to google
+            sharedPreferences.edit().putString("loginType", "google").apply()
         }
 
-        // Assuming that you have a button for guest login in your layout with id guestLoginButton
         binding.guestLoginButton.setOnClickListener {
             onContinueAsGuestClicked()
+
+            // Set login type to guest
+            sharedPreferences.edit().putString("loginType", "guest").apply()
         }
     }
 
