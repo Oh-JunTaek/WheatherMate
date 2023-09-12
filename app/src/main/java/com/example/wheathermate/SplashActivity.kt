@@ -1,12 +1,11 @@
 package com.example.wheathermate
 
-import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
+import com.example.wheathermate.databinding.ActivitySplashBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,10 +21,20 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var binding: ActivitySplashBinding
+    private fun onContinueAsGuestClicked() {
+        // 게스트로 계속하기 버튼이 클릭되었을 때 실행할 동작
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
@@ -33,10 +42,14 @@ class SplashActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        val signInButton = findViewById<com.google.android.gms.common.SignInButton>(R.id.sign_in_button)
-        signInButton.setOnClickListener {
+        binding.signInButton.setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+
+        // Assuming that you have a button for guest login in your layout with id guestLoginButton
+        binding.guestLoginButton.setOnClickListener {
+            onContinueAsGuestClicked()
         }
     }
 
