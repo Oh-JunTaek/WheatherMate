@@ -18,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
     companion object{
         private const val RC_SIGN_IN= 1234 // 혹은 다른 숫자.
         private const val TAG= "SplashActivity"
+
     }
 
     private lateinit var googleSignInClient: GoogleSignInClient

@@ -20,6 +20,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.wheathermate.databinding.ActivityHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 class HomeActivity : AppCompatActivity() {
 
