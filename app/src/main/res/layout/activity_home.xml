@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hometxt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#87CEFA"
+    android:orientation="vertical"
     tools:context=".HomeActivity">
 
     <TextView
@@ -76,6 +77,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="614dp"
         android:text="일정 확인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/homeedit"
+        android:layout_width="360dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="559dp"
+        android:layout_marginBottom="117dp"
+        android:hint="일정 없음"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
