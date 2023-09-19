@@ -9,7 +9,7 @@ android {
     compileSdk = 33
     viewBinding {
         enable = true
-    }
+    }git
 
     defaultConfig {
         applicationId = "com.example.wheathermate"
