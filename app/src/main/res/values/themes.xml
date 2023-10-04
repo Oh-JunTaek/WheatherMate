@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.WheatherMate" parent="Base.Theme.WheatherMate" />
+    <style name="Theme.WheatherMate.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.WheatherMate.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.WheatherMate.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
