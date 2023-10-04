@@ -1,5 +1,10 @@
 import android.content.pm.PackageManager
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +40,15 @@ class InfoFragment : Fragment() {
         }
 
         // 이메일과 계좌정보 세팅
-        binding.tvInfo.text = "wns5388@naver.com"
-        binding.tvAccountInfo.text = "카카오뱅크 3333-09-4728124"
+        val infoTitle = SpannableString("개발자 메일\n")
+        infoTitle.setSpan(StyleSpan(Typeface.BOLD), 0, infoTitle.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val infoEmail = SpannableString("wns5388@naver.com")
+        binding.tvInfo.text = SpannableStringBuilder().append(infoTitle).append(infoEmail)
+
+        val accountTitle = SpannableString("후원계좌\n")
+        accountTitle.setSpan(StyleSpan(Typeface.BOLD), 0, accountTitle.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val accountNumber = SpannableString("카카오뱅크 3333-09-4728124")
+        binding.tvAccountInfo.text = SpannableStringBuilder().append(accountTitle).append(accountNumber)
     }
 
     override fun onDestroyView() {

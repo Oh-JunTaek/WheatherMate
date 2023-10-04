@@ -2,6 +2,7 @@ package com.example.wheathermate
 
 
 import InfoFragment
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,8 +10,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.wheathermate.databinding.ActivityHomeBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
 import javax.annotation.meta.When
 
@@ -200,15 +204,46 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             super.onBackPressed()
         }
     }
+    private fun getUserName(): String {
+        val sharedPreferences = this.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        return sharedPreferences?.getString("username", "Guest") ?: "Guest"
+    }
+
+    private fun setUserName(username: String) {
+        val sharedPreferences = this.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        sharedPreferences?.edit()?.putString("username", username)?.apply()
+    }
+    //
+    private fun showUserNameInputDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter your nickname")
+
+        val inputField = EditText(this)
+        builder.setView(inputField)
+
+        builder.setPositiveButton("저장") { dialog, _ ->
+            // save entered username
+            setUserName(inputField.text.toString())
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("취소") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.setting -> {
-                Toast.makeText(applicationContext, "설정", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
                 true
             }
 
             R.id.notification -> {
-                Toast.makeText(applicationContext, "알림", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
                 true
             }
 
@@ -220,6 +255,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
                 // 여기에서 DrawerLayout을 닫습니다.
                 binding.layoutDrawer.closeDrawer(GravityCompat.START)
+                true
+            }
+
+            R.id.user -> { //사용자정보
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id. rsetting ->{ // 알림설정
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id. vsetting ->{ //꾸미기
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
                 true
             }
 
