@@ -1,6 +1,7 @@
 package com.example.wheathermate
 
 
+import InfoFragment
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -192,7 +193,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val headerView = layoutInflater.inflate(R.layout.nav_header, null)
         binding.NaviView.addHeaderView(headerView)
     }
-
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.setting -> {
@@ -206,7 +213,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.info -> {
-                Toast.makeText(applicationContext, "정보", Toast.LENGTH_SHORT).show()
+                val fragment = InfoFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+                // 여기에서 DrawerLayout을 닫습니다.
+                binding.layoutDrawer.closeDrawer(GravityCompat.START)
                 true
             }
 
