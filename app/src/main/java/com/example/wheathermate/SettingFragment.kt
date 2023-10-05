@@ -56,4 +56,4 @@ class SettingFragment : Fragment() {
                 }
             }
     }
-}
+}//1

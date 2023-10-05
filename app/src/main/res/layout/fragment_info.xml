@@ -28,5 +28,5 @@
         android:id="@+id/tv_AccountInfo"
         android:layout_width="240dp"
         android:layout_height="70dp" />
-
+<!--1-->
 </LinearLayout>

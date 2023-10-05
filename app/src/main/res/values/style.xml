@@ -8,6 +8,6 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.6</item> <!-- 뒷 배경의 흐릿한 정도를 설정합니다 -->
     </style>
-
+<!--1-->
     <!-- Other styles... -->
 </resources>

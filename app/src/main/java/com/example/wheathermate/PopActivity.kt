@@ -83,4 +83,4 @@ class PopActivity : AppCompatActivity() {
             else -> binding.imageView.setImageResource(R.drawable.default_icon)
         }
     }
-}
+}//1
