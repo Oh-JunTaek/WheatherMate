@@ -1,11 +1,9 @@
 package com.example.wheathermate
 
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -19,10 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.wheathermate.databinding.ActivityHomeBinding
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 
 class HomeActivity : AppCompatActivity() {
 
@@ -146,34 +140,7 @@ class HomeActivity : AppCompatActivity() {
 
             editor.putString("selected_date", selectedDate)
             editor.apply()
-
-            val loginType = sharedPreferences.getString("loginType", "")
-
-            if (loginType == "guest") {
-                // Load data for the selected date from SharedPreferences
-                val savedSelectedDate = sharedPreferences.getString("selected_date", "")
-                if(savedSelectedDate != null) {
-                    val titleForSelectedDate =
-                        sharedPreferences.getString("$savedSelectedDate-title", "")
-
-                    if (titleForSelectedDate == "") {
-                        binding.homeedit.text = "일정 없음"
-                    } else {
-                        binding.homeedit.text = titleForSelectedDate
-                    }
-                }
-
-            } else if (loginType == "google") {
-                // Load data for the selected date from Firebase
-                loadDataFromFirebase(selectedDate)
-
-            } else {
-                Toast.makeText(this@HomeActivity, "No valid login type found.", Toast.LENGTH_SHORT).show()
-            }
         }
-
-
-
 
         // 버튼 클릭 리스너 설정
         binding.btnchk.setOnClickListener {
@@ -208,29 +175,5 @@ class HomeActivity : AppCompatActivity() {
             // 새로운 Activity 시작
             startActivity(intent)
         }
-    }
-    private fun loadDataFromFirebase(date: String) {
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection("users").document("DvHGYjvsSKGHG0MwDUdK")
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    var titleText = document.getString("$date-title")
-
-                    if(titleText.isNullOrEmpty()) {
-                        titleText="일정 없음"
-                    }
-
-                    binding.homeedit.text=titleText
-
-                } else {
-                    Log.d(TAG, "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
     }
 }
