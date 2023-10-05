@@ -15,4 +15,4 @@ class MyWorker(appContext: Context, workerParams: WorkerParameters)
         // Indicate whether the work finished successfully with the Result
         return Result.success()
     }
-}//1
+}

@@ -82,4 +82,4 @@ class SplashActivity : AppCompatActivity() {
             // 로그인 실패 시 예외 처리 (예 : 다시 Splash 화면에서 시작 등의 작업 수행 가능.)
         }
     }
-}//1
+}

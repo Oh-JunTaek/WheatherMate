@@ -40,4 +40,4 @@ class WeatherViewModel : ViewModel() {
             }
         })
     }
-}//1
+}

@@ -176,4 +176,4 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-}//1
+}

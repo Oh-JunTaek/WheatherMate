@@ -11,4 +11,4 @@ class MyAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         // Do something when alarm is received
     }
-}//1
+}
