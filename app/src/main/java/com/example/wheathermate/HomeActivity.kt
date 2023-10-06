@@ -23,8 +23,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.wheathermate.databinding.ActivityHomeBinding
+import com.example.wheathermate.databinding.BottomsheetdialogBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import javax.annotation.meta.When
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -197,6 +201,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val headerView = layoutInflater.inflate(R.layout.nav_header, null)
         binding.NaviView.addHeaderView(headerView)
     }
+
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
@@ -204,6 +209,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             super.onBackPressed()
         }
     }
+
     private fun getUserName(): String {
         val sharedPreferences = this.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
         return sharedPreferences?.getString("username", "Guest") ?: "Guest"
@@ -213,6 +219,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val sharedPreferences = this.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
         sharedPreferences?.edit()?.putString("username", username)?.apply()
     }
+
     //
     private fun showUserNameInputDialog() {
         val builder = AlertDialog.Builder(this)
@@ -234,7 +241,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         builder.show()
     }
 
-
+    fun isGoogleUser(): Boolean {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        return currentUser?.providerData?.any { it.providerId == "google.com" } ?: false
+    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.setting -> {
@@ -253,24 +263,79 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit()
-                // 여기에서 DrawerLayout을 닫습니다.
+
                 binding.layoutDrawer.closeDrawer(GravityCompat.START)
                 true
             }
 
             R.id.user -> { //사용자정보
-                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                val bottomSheetDialog = BottomSheetDialog(this)
+                val binding = BottomsheetdialogBinding.inflate(layoutInflater)
+
+                binding.nicknameTextView.text = "${getUserName()}님 반갑습니다."
+
+                binding.changeNicknameButton.setOnClickListener {
+                    showUserNameInputDialog()
+                    bottomSheetDialog.dismiss() // 닉네임 변경 후 다이얼로그 닫기
+                }
+
+                binding.logoutButton.setOnClickListener {
+
+                    if (isGoogleUser()) {
+                        val googleSignInClient = GoogleSignIn.getClient(
+                            this@HomeActivity,
+                            GoogleSignInOptions.DEFAULT_SIGN_IN
+                        )
+                        googleSignInClient.signOut().addOnCompleteListener(this@HomeActivity) {
+                            setUserName("Guest")
+                            Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
+
+                            val intent = Intent(this@HomeActivity, SplashActivity::class.java)
+                            startActivity(intent)
+
+                            finish()
+                        }
+                    } else {
+
+                        setUserName("Guest")
+                        Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this@HomeActivity, SplashActivity::class.java)
+                        startActivity(intent)
+
+                        finish()
+                    }
+                    bottomSheetDialog.dismiss() // 로그아웃 후 다이얼로그 닫기
+                }
+
+                bottomSheetDialog.setContentView(binding.root)
+
+                /*
+                View view = bottomSheetDialog.getWindow().getDecorView();
+                view.setBackgroundResource(android.R.color.transparent);
+                */
+
+                bottomSheetDialog.show()
+
                 true
+
             }
 
-            R.id. rsetting ->{ // 알림설정
+            R.id.rsetting -> { // 알림설정
+
                 Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+
                 true
+
             }
 
-            R.id. vsetting ->{ //꾸미기
+            R.id.vsetting -> { //꾸미기
+
                 Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+
                 true
+
             }
 
             else -> false
