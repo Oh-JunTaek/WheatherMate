@@ -326,9 +326,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.rsetting -> { // 알림설정
+                val fragment = RsettingFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
 
-                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
-
+                binding.layoutDrawer.closeDrawer(GravityCompat.START)
                 true
 
             }

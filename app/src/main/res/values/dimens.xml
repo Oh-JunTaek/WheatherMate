@@ -5,4 +5,5 @@
 
     <dimen name="item_padding">16dp</dimen>
     <dimen name="item_image_height">200dp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
 </resources>
