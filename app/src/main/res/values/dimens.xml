@@ -2,4 +2,7 @@
 <resources>
     <!-- Other dimension values... -->
     <dimen name='margin_medium'>16dp</dimen> <!-- Add this line -->
+
+    <dimen name="item_padding">16dp</dimen>
+    <dimen name="item_image_height">200dp</dimen>
 </resources>

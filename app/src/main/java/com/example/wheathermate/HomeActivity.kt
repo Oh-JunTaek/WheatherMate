@@ -331,11 +331,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.vsetting -> { //꾸미기
-
-                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
-
+                val fragment = VsettingFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
                 true
-
             }
 
             else -> false
