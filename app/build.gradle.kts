@@ -16,7 +16,7 @@ android {
         minSdk = 24
         targetSdk = 33
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.00.00"//버전.업데이트.버그패치
         buildConfigField("String", "WEATHER_API_KEY", "\"${properties["MyWeatherApiKey"]}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
