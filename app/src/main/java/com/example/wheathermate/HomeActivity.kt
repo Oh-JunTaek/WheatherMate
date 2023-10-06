@@ -1,14 +1,20 @@
 package com.example.wheathermate
 
 
+import InfoFragment
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.GravityCompat
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,21 +23,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.wheathermate.databinding.ActivityHomeBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.navigation.NavigationView
+import javax.annotation.meta.When
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     data class WeatherResponse(
         val weather: List<Weather>,
         val main: Main,
         // 필요한 날씨 정보들을 포함하는 다른 필드들도 추가할 수 있습니다.
     )
+
     data class Weather(
         val id: Int,
         val main: String,
     )
+
     data class Main(
         val temp: Double,
     )
+
     interface WeatherApiService {
         @GET("weather")
         fun getWeatherData(
@@ -53,6 +65,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
 
         // Retrofit 객체 생성
         val retrofit = Retrofit.Builder()
@@ -174,6 +187,93 @@ class HomeActivity : AppCompatActivity() {
 
             // 새로운 Activity 시작
             startActivity(intent)
+        }
+        binding.btnNavi.setOnClickListener {
+            binding.layoutDrawer.openDrawer(GravityCompat.START)  // 'layoutDrawer'는 DrawerLayout의 ID입니다.
+        }
+
+        // NavigationView의 메뉴 아이템 선택에 대한 리스너 설정
+        binding.NaviView.setNavigationItemSelectedListener(this)
+        val headerView = layoutInflater.inflate(R.layout.nav_header, null)
+        binding.NaviView.addHeaderView(headerView)
+    }
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+    private fun getUserName(): String {
+        val sharedPreferences = this.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        return sharedPreferences?.getString("username", "Guest") ?: "Guest"
+    }
+
+    private fun setUserName(username: String) {
+        val sharedPreferences = this.getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        sharedPreferences?.edit()?.putString("username", username)?.apply()
+    }
+    //
+    private fun showUserNameInputDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter your nickname")
+
+        val inputField = EditText(this)
+        builder.setView(inputField)
+
+        builder.setPositiveButton("저장") { dialog, _ ->
+            // save entered username
+            setUserName(inputField.text.toString())
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("취소") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.setting -> {
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id.notification -> {
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id.info -> {
+                val fragment = InfoFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+                // 여기에서 DrawerLayout을 닫습니다.
+                binding.layoutDrawer.closeDrawer(GravityCompat.START)
+                true
+            }
+
+            R.id.user -> { //사용자정보
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id. rsetting ->{ // 알림설정
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id. vsetting ->{ //꾸미기
+                Toast.makeText(applicationContext, "미구현", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            else -> false
         }
     }
 }
