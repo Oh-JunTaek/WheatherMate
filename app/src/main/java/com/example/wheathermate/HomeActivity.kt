@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -64,6 +66,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var weatherTextView: TextView
     private lateinit var binding: ActivityHomeBinding
     private lateinit var service: WeatherApiService
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var runnableCode: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,7 +150,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // 아무것도 선택되지 않았을 때의 처리
             }
+
         }
+
 
         // 초기 날씨 정보 로딩 (예: 서울)
         fetchWeatherData("Seoul", apiKey)
