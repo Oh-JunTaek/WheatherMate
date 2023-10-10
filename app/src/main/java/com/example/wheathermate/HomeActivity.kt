@@ -126,10 +126,27 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             })
         }
+        runnableCode = object : Runnable {
+            override fun run() {
+
+                // 현재 선택된 도시 이름 가져오기
+                val selectedCity = binding.citySpinner.selectedItem.toString()
+                val apiKey = BuildConfig.WEATHER_API_KEY
+
+                // 날씨 정보 업데이트하기
+                fetchWeatherData(selectedCity, apiKey)
+
+                // 1시간(3600000밀리초) 후에 이 Runnable 객체를 다시 실행합니다.
+                handler.postDelayed(this, 3600000)
+            }
+        }
+
+// 앱이 시작될 때 Runnable 객체를 처음으로 실행합니다.
+        handler.post(runnableCode)
 
         // 원하는 지역명과 실제 API 키로 대체해야 합니다.
 
-        val apiKey = "BuildConfig.WEATHER_API_KEY"
+        val apiKey = BuildConfig.WEATHER_API_KEY
         val cities = arrayOf("Seoul", "Busan", "Incheon", "Daegu" /* 다른 도시들 */)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cities)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -152,6 +169,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
         }
+
 
 
         // 초기 날씨 정보 로딩 (예: 서울)

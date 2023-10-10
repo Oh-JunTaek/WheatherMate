@@ -17,14 +17,7 @@
         android:theme="@style/Theme.WheatherMate"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".MyAdapter"
-            android:exported="false" />
-        <activity
-            android:name=".ScrollingActivity"
-            android:exported="false"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/Theme.WheatherMate.NoActionBar" />
+
         <activity
             android:name=".MyAlarmReceiver"
             android:exported="false" />
