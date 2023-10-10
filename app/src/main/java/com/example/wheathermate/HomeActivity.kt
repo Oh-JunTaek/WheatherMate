@@ -143,7 +143,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-// 앱이 시작될 때 Runnable 객체를 처음으로 실행합니다.
+        // 앱이 시작될 때 Runnable 객체를 처음으로 실행합니다.
         handler.post(runnableCode)
 
         // 원하는 지역명과 실제 API 키로 대체해야 합니다.
@@ -163,19 +163,18 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 id: Long
             ) {
                 val selectedCity = parent.getItemAtPosition(position).toString()
-                fetchWeatherData(selectedCity, apiKey)
+
                 // 네트워크 연결 상태 확인 후 API 호출
                 if (isNetworkConnected(this@HomeActivity)) {
                     fetchWeatherData(selectedCity, apiKey)
                 } else {
-                    Toast.makeText(this@HomeActivity, "인터넷 연결이 필요합니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@HomeActivity, getString(R.string.need_internet_connection), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // 아무것도 선택되지 않았을 때의 처리
             }
-
         }
 
 
