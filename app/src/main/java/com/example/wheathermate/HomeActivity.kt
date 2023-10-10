@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wheathermate.NetworkUtils.isNetworkConnected
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -123,6 +124,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                     println(t.message)
+                    Toast.makeText(this@HomeActivity, "날씨 정보를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -162,6 +164,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ) {
                 val selectedCity = parent.getItemAtPosition(position).toString()
                 fetchWeatherData(selectedCity, apiKey)
+                // 네트워크 연결 상태 확인 후 API 호출
+                if (isNetworkConnected(this@HomeActivity)) {
+                    fetchWeatherData(selectedCity, apiKey)
+                } else {
+                    Toast.makeText(this@HomeActivity, "인터넷 연결이 필요합니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
