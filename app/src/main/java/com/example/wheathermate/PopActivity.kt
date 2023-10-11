@@ -60,8 +60,12 @@ class PopActivity : AppCompatActivity() {
             } else {
                 binding.titleTextView.text = titleForSelectedDate
                 binding.contentEditText.setText(contentForSelectedDate)
-            }
-
+            }//아래는 선택된 날짜의 날씨를 반영하기 위함
+//            val weatherConditionForSelectedDate: String? = getWeatherCondition(selectedDate)
+//
+//            if(weatherConditionForSelectedDate != null) {
+//                setWeatherIcon(weatherConditionForSelectedDate)
+//            }
         } else {
             Toast.makeText(this@PopActivity,"No date is passed.",Toast.LENGTH_SHORT).show()
         }

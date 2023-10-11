@@ -3,7 +3,7 @@
     <string name="default_web_client_id">614783694481-4208kmllvor43cbdk5bube2ftse520mr.apps.googleusercontent.com</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<!--여기서부터-->
+    <!--여기서부터-->
     <string name="need_internet_connection">인터넷 연결이 필요합니다.</string>
     <string name="failed_to_load_weather_data">날씨 정보를 불러오는데 실패했습니다.</string>
     <string name="send_alarm">알림을 보낼게요.</string>
