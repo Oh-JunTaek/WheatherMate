@@ -17,7 +17,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wheathermate.NetworkUtils.isNetworkConnected
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,12 +27,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.wheathermate.databinding.ActivityHomeBinding
 import com.example.wheathermate.databinding.BottomsheetdialogBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import javax.annotation.meta.When
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -275,10 +270,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         builder.show()
     }
 
-//    fun isGoogleUser(): Boolean {
-//        val currentUser = FirebaseAuth.getInstance().currentUser
-//        return currentUser?.providerData?.any { it.providerId == "google.com" } ?: false
-//    } 구글 로그인 기능 비 활성화
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.setting -> {
@@ -324,33 +315,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     bottomSheetDialog.dismiss() // 로그아웃 후 다이얼로그 닫기
 
-
-//                    if (isGoogleUser()) { 구글 로그인 기능 비 활성화
-//                        val googleSignInClient = GoogleSignIn.getClient(
-//                            this@HomeActivity,
-//                            GoogleSignInOptions.DEFAULT_SIGN_IN
-//                        )
-//                        googleSignInClient.signOut().addOnCompleteListener(this@HomeActivity) {
-//                            setUserName("Guest")
-//                            Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT)
-//                                .show()
-//
-//                            val intent = Intent(this@HomeActivity, SplashActivity::class.java)
-//                            startActivity(intent)
-//
-//                            finish()
-//                        }
-//                    } else {
-//
-//                        setUserName("Guest")
-//                        Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
-//
-//                        val intent = Intent(this@HomeActivity, SplashActivity::class.java)
-//                        startActivity(intent)
-//
-//                        finish()
-//                    }
-//                    bottomSheetDialog.dismiss() // 로그아웃 후 다이얼로그 닫기
                 }
 
                 bottomSheetDialog.setContentView(binding.root)
@@ -387,14 +351,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 true
             }
 
-//            R.id.today -> {
-//                val fragment = TodayFragment()
-//                supportFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_container, fragment)
-//                    .addToBackStack(null)
-//                    .commit()
-//                true
-//            }
+            R.id.today -> {
+                val fragment = TodayFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+                true
+            }
 
             else -> false
         }

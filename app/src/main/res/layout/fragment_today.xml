@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TodayFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/weather_icon"
+        android:layout_width="219dp"
+        android:layout_height="98dp"
+        android:contentDescription="@string/default_web_client_id" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/current_weather_text_view"
+        android:layout_width="111dp"
+        android:layout_height="123dp"
+        android:textSize="24sp" />
+
+    <!--    <TextView-->
+<!--        android:id="@+id/temperature_text_view"-->
+<!--        android:layout_below="@id/current_weather_text_view"-->
+<!--    .../>-->
+
+<!--    <TextView-->
+<!--    .../>-->
+</RelativeLayout>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.wheathermate.databinding.FragmentTodayBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,19 +19,27 @@ import java.util.Locale
 
 
 class TodayFragment : Fragment() {
+    private var _binding: FragmentTodayBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_today, container, false)
+        _binding = FragmentTodayBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         getForecastData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun getForecastData() {
@@ -49,36 +58,33 @@ class TodayFragment : Fragment() {
         val call = service.getForecast(latitude.toString(), longitude.toString(), apiKey)
 
         call.enqueue(object : Callback<ForecastResponse> {
-            override fun onResponse(call : Call<ForecastResponse>, response :
-            Response<ForecastResponse>
+            override fun onResponse(
+                call: Call<ForecastResponse>, response:
+                Response<ForecastResponse>
             ) {
 
                 if (response.code() == 200) {
-
                     response.body()?.let { forecastResponse ->
-                        val todayData = forecastResponse.list.filter {
-                            // 날짜 비교를 위한 현재 날짜
-                            val currentDate = Calendar.getInstance().apply {
-                                set(Calendar.HOUR_OF_DAY, 0)
-                                set(Calendar.MINUTE, 0)
-                                set(Calendar.SECOND, 0)
-                                set(Calendar.MILLISECOND, 0)
-                            }.time
+                        val todayData = forecastResponse.list.filter { /* ... */ }
+                        if (todayData.isNotEmpty()) {
+                            val weatherCondition = todayData[0].weather[0].main
 
-                            // API로부터 받은 데이터의 날짜
-                            val apiDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(it.dt_txt)
+                            activity?.runOnUiThread {
+                                binding.currentWeatherTextView.text = weatherCondition
 
-                            apiDate?.before(currentDate) == false
+                                when (weatherCondition) {
+                                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.rain)
+                                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.sun)
+                                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.snow)
+                                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.clouds)
+                                    else -> binding.weatherIcon.setImageResource(R.drawable.default_icon)
+                                }
+                            }
                         }
-
-                        // 여기서 todayData를 이용해 그래프를 그릴 수 있습니다.
                     }
                 }
             }
-
-            override fun onFailure(call : Call<ForecastResponse>, t : Throwable) {
-                // 오류 처리
-            }
-        })
-    }
-}
+            override fun onFailure(call: Call<ForecastResponse>, t: Throwable) {
+                // Handle network errors here.
+        }
+    })
