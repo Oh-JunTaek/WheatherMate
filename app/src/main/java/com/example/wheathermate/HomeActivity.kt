@@ -275,10 +275,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         builder.show()
     }
 
-    fun isGoogleUser(): Boolean {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        return currentUser?.providerData?.any { it.providerId == "google.com" } ?: false
-    }
+//    fun isGoogleUser(): Boolean {
+//        val currentUser = FirebaseAuth.getInstance().currentUser
+//        return currentUser?.providerData?.any { it.providerId == "google.com" } ?: false
+//    } 구글 로그인 기능 비 활성화
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.setting -> {
@@ -314,33 +314,43 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 binding.logoutButton.setOnClickListener {
+                    setUserName("Guest")
+                    Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
 
-                    if (isGoogleUser()) {
-                        val googleSignInClient = GoogleSignIn.getClient(
-                            this@HomeActivity,
-                            GoogleSignInOptions.DEFAULT_SIGN_IN
-                        )
-                        googleSignInClient.signOut().addOnCompleteListener(this@HomeActivity) {
-                            setUserName("Guest")
-                            Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT)
-                                .show()
+                    val intent = Intent(this@HomeActivity, SplashActivity::class.java)
+                    startActivity(intent)
 
-                            val intent = Intent(this@HomeActivity, SplashActivity::class.java)
-                            startActivity(intent)
+                    finish()
 
-                            finish()
-                        }
-                    } else {
-
-                        setUserName("Guest")
-                        Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        val intent = Intent(this@HomeActivity, SplashActivity::class.java)
-                        startActivity(intent)
-
-                        finish()
-                    }
                     bottomSheetDialog.dismiss() // 로그아웃 후 다이얼로그 닫기
+
+
+//                    if (isGoogleUser()) { 구글 로그인 기능 비 활성화
+//                        val googleSignInClient = GoogleSignIn.getClient(
+//                            this@HomeActivity,
+//                            GoogleSignInOptions.DEFAULT_SIGN_IN
+//                        )
+//                        googleSignInClient.signOut().addOnCompleteListener(this@HomeActivity) {
+//                            setUserName("Guest")
+//                            Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT)
+//                                .show()
+//
+//                            val intent = Intent(this@HomeActivity, SplashActivity::class.java)
+//                            startActivity(intent)
+//
+//                            finish()
+//                        }
+//                    } else {
+//
+//                        setUserName("Guest")
+//                        Toast.makeText(this@HomeActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
+//
+//                        val intent = Intent(this@HomeActivity, SplashActivity::class.java)
+//                        startActivity(intent)
+//
+//                        finish()
+//                    }
+//                    bottomSheetDialog.dismiss() // 로그아웃 후 다이얼로그 닫기
                 }
 
                 bottomSheetDialog.setContentView(binding.root)
@@ -376,6 +386,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
                 true
             }
+
+//            R.id.today -> {
+//                val fragment = TodayFragment()
+//                supportFragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_container, fragment)
+//                    .addToBackStack(null)
+//                    .commit()
+//                true
+//            }
 
             else -> false
         }
