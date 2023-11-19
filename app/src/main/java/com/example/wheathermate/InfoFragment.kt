@@ -1,3 +1,5 @@
+package com.example.wheathermate
+
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Bundle

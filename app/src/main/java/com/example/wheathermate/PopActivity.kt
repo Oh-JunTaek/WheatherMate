@@ -16,41 +16,33 @@ class PopActivity : AppCompatActivity() {
         binding = ActivityPopBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set the width and height of the dialog
+        // 다이얼로그의 너비와 높이 설정
         val windowParams = window.attributes
-        windowParams.dimAmount =
-            0.90f // Adjust this value to change the amount of dim behind the dialog
-        windowParams.width =
-            (resources.displayMetrics.widthPixels * 0.8).toInt() // 80% width of screen
-        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT // Height as necessary
+        windowParams.dimAmount = 0.90f // 다이얼로그 뒷 배경의 어두운 정도를 조정
+        windowParams.width = (resources.displayMetrics.widthPixels * 0.8).toInt() // 화면 너비의 80%
+        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT // 높이는 필요한 만큼
         window.attributes = windowParams
 
-
-        // 인텐트에서 데이터 받아오기
-
-
+        // "일정 편집" 버튼 클릭 리스너 설정
         binding.btnedit.setOnClickListener {
-            // Start TodoActivity
             val intent = Intent(this, TodoActivity::class.java)
             startActivity(intent)
-
-            // Finish PopActivity
             finish()
         }
 
+        // "닫기" 버튼 클릭 리스너 설정
         binding.btnclose.setOnClickListener {
             finish()
         }
 
-        // Get SharedPreferences
-        // Get SharedPreferences
+        // SharedPreferences 가져오기
         val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
 
-        // previously selected date from the calendar
+        // 캘린더에서 선택한 날짜 가져오기
         val selectedDate = intent.getStringExtra("selected_date")
 
         if (selectedDate != null) {
-            // Load data for the selected date
+            // 선택한 날짜의 데이터 불러오기
             val titleForSelectedDate = sharedPreferences.getString("$selectedDate-title", "")
             val contentForSelectedDate = sharedPreferences.getString("$selectedDate-content", "")
 
@@ -60,26 +52,24 @@ class PopActivity : AppCompatActivity() {
             } else {
                 binding.titleTextView.text = titleForSelectedDate
                 binding.contentEditText.setText(contentForSelectedDate)
-            }//아래는 선택된 날짜의 날씨를 반영하기 위함
-//            val weatherConditionForSelectedDate: String? = getWeatherCondition(selectedDate)
-//
-//            if(weatherConditionForSelectedDate != null) {
-//                setWeatherIcon(weatherConditionForSelectedDate)
-//            }
+            }
+
+            // 선택한 날짜의 날씨 상태에 따라 아이콘 설정
+            // val weatherConditionForSelectedDate: String? = getWeatherCondition(selectedDate)
+            // if(weatherConditionForSelectedDate != null) {
+            //     setWeatherIcon(weatherConditionForSelectedDate)
+            // }
         } else {
-            Toast.makeText(this@PopActivity,"No date is passed.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@PopActivity,"날짜가 선택되지 않았습니다.",Toast.LENGTH_SHORT).show()
         }
 
-        // Disable editing on the EditText.
+        // EditText 편집 비활성화
         binding.contentEditText.isEnabled = false
-
-
     }
 
+    // 날씨 상태에 따른 아이콘 설정 함수
     private fun setWeatherIcon(weather: String) {
-        val weatherCondition = weather
-
-        when (weatherCondition) {
+        when (weather) {
             "Rain" -> binding.imageView.setImageResource(R.drawable.rain)
             "Clear" -> binding.imageView.setImageResource(R.drawable.sun)
             "Snow" -> binding.imageView.setImageResource(R.drawable.snow)

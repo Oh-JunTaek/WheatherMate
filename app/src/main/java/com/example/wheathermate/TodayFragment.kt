@@ -20,7 +20,6 @@ import java.util.Locale
 
 class TodayFragment : Fragment() {
     private var _binding: FragmentTodayBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -33,8 +32,9 @@ class TodayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        getForecastData()
+        val coordinates = getCoordinates()
+        val service = createWeatherService()
+        getForecastData(service, coordinates)
     }
 
     override fun onDestroyView() {
@@ -42,49 +42,60 @@ class TodayFragment : Fragment() {
         _binding = null
     }
 
-    private fun getForecastData() {
-        val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
-        val apiKey = BuildConfig.WEATHER_API_KEY
+    private fun getCoordinates(): Pair<Double, Double> {
+        val sharedPreferences =
+            requireActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
         val latitude = sharedPreferences.getFloat("latitude", 0f).toDouble()
         val longitude = sharedPreferences.getFloat("longitude", 0f).toDouble()
+        return Pair(latitude, longitude)
+    }//사용자의 위치 좌표 가져오기
+
+    private fun createWeatherService(): WeatherService {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://api.openweathermap.org/data/2.5/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+        return retrofit.create(WeatherService::class.java)
+    }//날씨api호출
 
-        val service = retrofit.create(WeatherService::class.java)
-
-        // 여기서 latitude와 longitude는 실제 위치 좌표값이어야 합니다.
-        val call = service.getForecast(latitude.toString(), longitude.toString(), apiKey)
+    private fun getForecastData(service: WeatherService, coordinates: Pair<Double, Double>) {
+        val apiKey = BuildConfig.WEATHER_API_KEY
+        val call = service.getForecast(coordinates.first.toString(),
+            coordinates.second.toString(), apiKey)
 
         call.enqueue(object : Callback<ForecastResponse> {
             override fun onResponse(
                 call: Call<ForecastResponse>, response:
                 Response<ForecastResponse>
             ) {
-
                 if (response.code() == 200) {
                     response.body()?.let { forecastResponse ->
-                        val todayData = forecastResponse.list.filter { /* ... */ }
-                        if (todayData.isNotEmpty()) {
-                            val weatherCondition = todayData[0].weather[0].main
-
-                            activity?.runOnUiThread {
-                                binding.currentWeatherTextView.text = weatherCondition
-
-                                when (weatherCondition) {
-                                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.rain)
-                                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.sun)
-                                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.snow)
-                                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.clouds)
-                                    else -> binding.weatherIcon.setImageResource(R.drawable.default_icon)
-                                }
-                            }
-                        }
+                        updateUIWithWeatherData(forecastResponse)
                     }
                 }
             }
+
             override fun onFailure(call: Call<ForecastResponse>, t: Throwable) {
                 // Handle network errors here.
+            }
+        })
+    }//날씨 예보를 가져옴
+
+    private fun updateUIWithWeatherData(forecastResponse: ForecastResponse) {
+        val todayData = forecastResponse.list.toList()
+        if (todayData.isNotEmpty()) {
+            val weatherCondition = todayData[0].weather[0].main
+            activity?.runOnUiThread {
+                binding.currentWeatherTextView.text = weatherCondition
+
+                when (weatherCondition) {
+                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.rain)
+                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.sun)
+                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.snow)
+                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.clouds)
+                    else -> binding.weatherIcon.setImageResource(R.drawable.default_icon)
+                }
+            }
         }
-    })
+    }//날씨 정보를 기반으로 UI업데이트
+}

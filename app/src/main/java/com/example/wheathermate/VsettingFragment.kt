@@ -11,21 +11,22 @@ import com.example.wheathermate.databinding.FragmentVsettingBinding
 import com.example.wheathermate.databinding.ItemBackgroundImageBinding
 
 class VsettingFragment : Fragment() {
-    private var _binding: FragmentVsettingBinding? = null // 뷰바인딩 객체 선언.
-    private val binding get() = _binding!! // non-null 타입으로 가져오기 위한 프로퍼티.
+    private var _binding: FragmentVsettingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentVsettingBinding.inflate(inflater, container, false) // 인플레이트.
-        return binding.root // 바인딩 클래스의 root를 반환.
+        _binding = FragmentVsettingBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    // Clean up any references that can lead to memory leaks
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null  // 메모리 누수 방지를 위해 onDestroy에서 null로 설정.
+        _binding = null
     }
 }
 
@@ -34,19 +35,24 @@ class BackgroundImageAdapter(private val items : List<BackgroundImage>) : Recycl
     class ViewHolder(val binding: ItemBackgroundImageBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemBackgroundImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(inflateView(parent))
+    }
+
+    private fun inflateView(parent: ViewGroup): ItemBackgroundImageBinding {
+        return ItemBackgroundImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 
     override fun onBindViewHolder(holder : ViewHolder , position:Int){
+        setDrawableForImageView(holder, position)
+
+        // Set any additional configuration for item view (such as text, click listeners, etc.)
+        // ...
+    }
+
+    private fun setDrawableForImageView(holder: ViewHolder, position: Int) {
         val drawable = ContextCompat.getDrawable(holder.itemView.context, items[position].resId)
         holder.binding.imageView.setImageDrawable(drawable)
-
-        //아이템 뷰에 대한 설정(텍스트나 클릭 리스너 등록)
-        // ...
-
     }
 
     override fun getItemCount() = items.size
-
 }
